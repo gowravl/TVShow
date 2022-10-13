@@ -1,5 +1,6 @@
 package com.example.tvshow.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,16 @@ import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.home_activity_card.view.*
 
 class TVShowAdapter(
-    private val tvshows : List<TVShows>
+//    private val context : Context,
+    private val tvshows : List<TVShows>,
+    val listener: (TVShows)->Unit
     ): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
         class TVViewHolder(view: View) : RecyclerView.ViewHolder(view){
             private val IMAGE_BASE = "https://image.tmdb.org/t/p/original/"
-            fun bindTV(tvShow: TVShows){
+            fun bindTV(tvShow: TVShows,listener: (TVShows)->Unit){
                 itemView.title.text = tvShow.title
                 Glide.with(itemView).load(IMAGE_BASE+tvShow.backdrop).into(itemView.backdrop)
+                itemView.setOnClickListener { listener.invoke(tvShow) }
             }
         }
 
@@ -27,8 +31,7 @@ class TVShowAdapter(
     }
 
     override fun onBindViewHolder(holder: TVViewHolder, position: Int) {
-        holder.bindTV(tvshows.get(position))
-
+        holder.bindTV(tvshows.get(position),listener)
     }
 
     override fun getItemCount(): Int = tvshows.size

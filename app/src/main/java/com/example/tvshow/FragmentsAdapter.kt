@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class fragmentsAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
+class FragmentsAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
 
     var fragmentArrayList = ArrayList<Fragment>()
     var fragmentTitle = ArrayList<String>()
