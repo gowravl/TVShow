@@ -25,24 +25,37 @@ class MainActivity : AppCompatActivity() {
         recyclerView1.setHasFixedSize(true)
 
         val viewModel = ViewModelProviders.of(this).get(TVShowViewModel::class.java)
+
         val progressDialog = ProgressDialog(this@MainActivity)
         progressDialog.setTitle("Please Wait")
         progressDialog.setMessage("API is loading")
         progressDialog.show()
-//    viewModel.gettvListDataObserver().observe(this, Observer<List<TVShows>>{
-//            if(it != null){
-//            }
-//            else{
-//                Toast.makeText(this,"Error",Toast.LENGTH_LONG).show()
-//            }
-//        })
+
+    viewModel.loadingStateObserver().observe(this,Observer<Int>{
+        progressDialog.dismiss()
+    })
+    viewModel.errorStateObserver().observe(this,Observer<Int>{
+        val intent = Intent(this, NoConnection::class.java)
+        startActivity(intent)
+    })
+    viewModel.gettvListDataObserver().observe(this, Observer<List<TVShows>>{
+            if(it != null){
+                TODO()
+            }
+            else{
+                Toast.makeText(this,"Error",Toast.LENGTH_LONG).show()
+            }
+        })
         viewModel.getTVShowData{ tvshows : List<TVShows> ->
             recyclerView1.adapter=TVShowAdapter(tvshows){
-                progressDialog.dismiss()
                 val intent = Intent(this, tvdetails::class.java)
 //                intent.putExtra(INTENT_PARCELABLE,it)
                 startActivity(intent)
             }
         }
+    }
+
+    private fun showToast(value: String) {
+        Toast.makeText(this, value, Toast.LENGTH_LONG).show()
     }
 }
