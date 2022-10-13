@@ -1,17 +1,11 @@
 package com.example.tvshow.viewmodels
 
-import android.app.Application
-import android.app.Dialog
-import android.app.ProgressDialog
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tvshow.models.TVShowResponse
 import com.example.tvshow.models.TVShows
 import com.example.tvshow.services.TVShowAPI
 import com.example.tvshow.services.TVShowAPIService
-import com.example.tvshow.tvdetails
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,9 +22,9 @@ class TVShowViewModel():ViewModel() {
     fun errorStateObserver():MutableLiveData<Int>{
         return ErrorFlag
     }
-    fun gettvListDataObserver():MutableLiveData<List<TVShows>>{
-        return tvListData
-    }
+//    fun gettvListDataObserver():MutableLiveData<List<TVShows>>{
+//        return tvListData
+//    }
 
     fun getTVShowData(callback : (List<TVShows>) -> Unit){
 

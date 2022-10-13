@@ -18,5 +18,4 @@ class TVShowAPIService {
             return retrofit!!
         }
     }
-
 }
