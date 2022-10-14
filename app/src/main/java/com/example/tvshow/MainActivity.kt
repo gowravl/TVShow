@@ -1,6 +1,7 @@
 package com.example.tvshow
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -35,30 +36,24 @@ class MainActivity : AppCompatActivity() {
             setMessage("API is loading")
             show()
         }
-        viewModel.loadingStateObserver().observe(this, Observer<Int> {
-            progressDialog.dismiss()
-        })
-
-        viewModel.errorStateObserver().observe(this, Observer<Int> {
-            val intent = Intent(this, NoConnection::class.java)
-            startActivity(intent)
-        })
+        viewModel.apply {
+            loadingStateObserver().observe(this@MainActivity, Observer<Int> {
+                progressDialog.dismiss()
+            })
+            errorStateObserver().observe(this@MainActivity, Observer<Int> {
+                val intent = Intent(this@MainActivity, NoConnection::class.java)
+                startActivity(intent)
+            })
+        }
 
         GlobalScope.launch(Dispatchers.Main) {
             viewModel.getTVShowData { tvshows: List<TVShows> ->
                 recyclerView1.adapter = TVShowAdapter(tvshows) {
-                    val intent = Intent(this, tvdetails::class.java)
+                    val intent = Intent(this@MainActivity, tvdetails::class.java)
                     //                intent.putExtra(INTENT_PARCELABLE,it)
                     startActivity(intent)
                 }
             }
-//        viewModel.getTVShowData{ tvshows : List<TVShows> ->
-//            recyclerView1.adapter=TVShowAdapter(tvshows){
-//                val intent = Intent(this, tvdetails::class.java)
-//    //                intent.putExtra(INTENT_PARCELABLE,it)
-//                startActivity(intent)
-//            }
-//        }
         }
     }
 }
