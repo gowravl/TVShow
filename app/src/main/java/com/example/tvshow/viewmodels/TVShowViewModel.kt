@@ -2,6 +2,7 @@ package com.example.tvshow.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tvshow.adapters.TVShowAdapter
 import com.example.tvshow.models.TVShowResponse
 import com.example.tvshow.models.TVShows
 import com.example.tvshow.services.TVShowAPI
@@ -26,17 +27,31 @@ class TVShowViewModel():ViewModel() {
 //        return tvListData
 //    }
 
-    fun getTVShowData(callback : (List<TVShows>) -> Unit){
+    suspend fun getTVShowData(callback : (List<TVShows>) -> Unit){
 
         val apiService = TVShowAPIService.getInstance().create(TVShowAPI::class.java)
-        apiService.getTVList().enqueue(object : Callback<TVShowResponse> {
-            override fun onResponse(call: Call<TVShowResponse>, response: Response<TVShowResponse>) {
+        val response = apiService.getTVList()
+        if (response.isSuccessful){
                 LoadingFlag.postValue(1)
                 return callback(response.body()!!.tvshows)
             }
-            override fun onFailure(call: Call<TVShowResponse>, t: Throwable) {
+        else{
                 ErrorFlag.postValue(1)
             }
-        })
-    }
+        }
 }
+
+
+//     fun getTVShowData(callback : (List<TVShows>) -> Unit){
+//
+//        val apiService = TVShowAPIService.getInstance().create(TVShowAPI::class.java)
+//        apiService.getTVList().enqueue(object : Callback<TVShowResponse> {
+//            override fun onResponse(call: Call<TVShowResponse>, response: Response<TVShowResponse>) {
+//                LoadingFlag.postValue(1)
+//                return callback(response.body()!!.tvshows)
+//            }
+//            override fun onFailure(call: Call<TVShowResponse>, t: Throwable) {
+//                ErrorFlag.postValue(1)
+//            }
+//        })
+//    }
