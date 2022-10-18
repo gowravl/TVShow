@@ -1,58 +1,44 @@
 package com.example.tvshow.viewmodels
-
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tvshow.adapters.TVShowAdapter
-import com.example.tvshow.models.TVShowResponse
+import androidx.lifecycle.viewModelScope
 import com.example.tvshow.models.TVShows
 import com.example.tvshow.services.TVShowAPI
-import com.example.tvshow.services.TVShowAPIService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+@HiltViewModel
+class TVShowViewModel @Inject constructor (
+    private val api: TVShowAPI
+        ):ViewModel() {
 
-class TVShowViewModel():ViewModel() {
+    private val LoadingFlag: MutableLiveData<Int> = MutableLiveData()
+    private val ErrorFlag: MutableLiveData<Int> = MutableLiveData()
+    private val _response: MutableLiveData<List<TVShows>> = MutableLiveData()
 
-    private var tvListData: MutableLiveData<List<TVShows>> = MutableLiveData()
-    private val LoadingFlag : MutableLiveData<Int> = MutableLiveData()
-    private val ErrorFlag : MutableLiveData<Int> = MutableLiveData()
-
-    fun loadingStateObserver():MutableLiveData<Int>{
+    fun getLiveDataObserver(): MutableLiveData<List<TVShows>>{
+        return _response
+    }
+    fun loadingStateObserver(): MutableLiveData<Int> {
         return LoadingFlag
     }
-    fun errorStateObserver():MutableLiveData<Int>{
+
+    fun errorStateObserver(): MutableLiveData<Int> {
         return ErrorFlag
     }
-//    fun gettvListDataObserver():MutableLiveData<List<TVShows>>{
-//        return tvListData
-//    }
 
-    suspend fun getTVShowData( callback : (List<TVShows>) -> Unit){
-
-        val apiService = TVShowAPIService.getInstance().create(TVShowAPI::class.java)
-        val response = apiService.getTVList()
-        if (response.isSuccessful){
-                LoadingFlag.postValue(1)
-                return callback(response.body()!!.tvshows)
+    fun getData()= viewModelScope.launch(Dispatchers.IO) {
+        getTVList ()
+    }
+    suspend fun getTVList() {
+        val response = api.getTVList()
+        if (response.isSuccessful) {
+            LoadingFlag.postValue(1)
+            _response.postValue(response.body()!!.tvshows)
             }
         else{
-                ErrorFlag.postValue(1)
-            }
+            ErrorFlag.postValue(1)
         }
+    }
 }
-
-
-//     fun getTVShowData(callback : (List<TVShows>) -> Unit){
-//
-//        val apiService = TVShowAPIService.getInstance().create(TVShowAPI::class.java)
-//        apiService.getTVList().enqueue(object : Callback<TVShowResponse> {
-//            override fun onResponse(call: Call<TVShowResponse>, response: Response<TVShowResponse>) {
-//                LoadingFlag.postValue(1)
-//                return callback(response.body()!!.tvshows)
-//            }
-//            override fun onFailure(call: Call<TVShowResponse>, t: Throwable) {
-//                ErrorFlag.postValue(1)
-//            }
-//        })
-//    }

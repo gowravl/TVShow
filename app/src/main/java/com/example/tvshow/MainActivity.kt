@@ -1,11 +1,9 @@
 package com.example.tvshow
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings.Global
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,21 +11,20 @@ import com.example.tvshow.adapters.TVShowAdapter
 import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.tvshow.viewmodels.TVShowViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    //    companion object{
+//    companion object{
 //        val INTENT_PARCELABLE = "OBJECT_INTENT"
 //    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         recyclerView1.layoutManager = LinearLayoutManager(this)
         recyclerView1.setHasFixedSize(true)
-
         val viewModel = ViewModelProviders.of(this).get(TVShowViewModel::class.java)
 
         val progressDialog = ProgressDialog(this@MainActivity)
@@ -44,16 +41,12 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, NoConnection::class.java)
                 startActivity(intent)
             })
-        }
-
-        GlobalScope.launch(Dispatchers.Main) {
-            viewModel.getTVShowData { tvshows: List<TVShows> ->
+            getData()
+            getLiveDataObserver().observe(this@MainActivity,Observer<List<TVShows>>{tvshows->
                 recyclerView1.adapter = TVShowAdapter(tvshows) {
                     val intent = Intent(this@MainActivity, tvdetails::class.java)
-                    //                intent.putExtra(INTENT_PARCELABLE,it)
                     startActivity(intent)
-                }
-            }
+            }})
         }
     }
 }
