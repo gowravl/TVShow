@@ -15,9 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-//    companion object{
-//        val INTENT_PARCELABLE = "OBJECT_INTENT"
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +26,22 @@ class MainActivity : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(this@MainActivity)
         progressDialog.apply {
-            setTitle("Please Wait")
-            setMessage("API is loading")
+            setTitle(getString(R.string.pleasewait))
+            setMessage(getString(R.string.apiloading))
             show()
         }
         viewModel.apply {
-            loadingStateObserver().observe(this@MainActivity, Observer<Int> {
+            loadingStateObserver().observe(this@MainActivity, Observer<Boolean> {
                 progressDialog.dismiss()
             })
-            errorStateObserver().observe(this@MainActivity, Observer<Int> {
+            errorStateObserver().observe(this@MainActivity, Observer<Boolean> {
                 val intent = Intent(this@MainActivity, NoConnection::class.java)
                 startActivity(intent)
             })
             getData()
             getLiveDataObserver().observe(this@MainActivity,Observer<List<TVShows>>{tvshows->
-                recyclerView1.adapter = TVShowAdapter(tvshows) {
-                    val intent = Intent(this@MainActivity, tvdetails::class.java)
-                    startActivity(intent)
-            }})
+                recyclerView1.adapter = TVShowAdapter(this@MainActivity,tvshows)
+            })
         }
     }
 }

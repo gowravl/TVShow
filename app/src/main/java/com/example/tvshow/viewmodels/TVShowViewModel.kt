@@ -13,18 +13,18 @@ class TVShowViewModel @Inject constructor (
     private val api: TVShowAPI
         ):ViewModel() {
 
-    private val LoadingFlag: MutableLiveData<Int> = MutableLiveData()
-    private val ErrorFlag: MutableLiveData<Int> = MutableLiveData()
+    private val LoadingFlag: MutableLiveData<Boolean> = MutableLiveData()
+    private val ErrorFlag: MutableLiveData<Boolean> = MutableLiveData()
     private val _response: MutableLiveData<List<TVShows>> = MutableLiveData()
 
     fun getLiveDataObserver(): MutableLiveData<List<TVShows>>{
         return _response
     }
-    fun loadingStateObserver(): MutableLiveData<Int> {
+    fun loadingStateObserver(): MutableLiveData<Boolean> {
         return LoadingFlag
     }
 
-    fun errorStateObserver(): MutableLiveData<Int> {
+    fun errorStateObserver(): MutableLiveData<Boolean> {
         return ErrorFlag
     }
 
@@ -34,11 +34,11 @@ class TVShowViewModel @Inject constructor (
     suspend fun getTVList() {
         val response = api.getTVList()
         if (response.isSuccessful) {
-            LoadingFlag.postValue(1)
+            LoadingFlag.postValue(false)
             _response.postValue(response.body()!!.tvshows)
             }
         else{
-            ErrorFlag.postValue(1)
+            ErrorFlag.postValue(false)
         }
     }
 }
