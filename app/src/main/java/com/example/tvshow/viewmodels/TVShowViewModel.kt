@@ -1,44 +1,39 @@
 package com.example.tvshow.viewmodels
+
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tvshow.models.TVShows
-import com.example.tvshow.services.TVShowAPI
+import com.example.tvshow.repository.MyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class TVShowViewModel @Inject constructor (
-    private val api: TVShowAPI
+    private val repository: MyRepository
         ):ViewModel() {
 
-    private val LoadingFlag: MutableLiveData<Boolean> = MutableLiveData()
-    private val ErrorFlag: MutableLiveData<Boolean> = MutableLiveData()
-    private val _response: MutableLiveData<List<TVShows>> = MutableLiveData()
+    private val loadingFlagResponse:LiveData<Boolean>
+    get() = repository.loadingFlag
 
-    fun getLiveDataObserver(): MutableLiveData<List<TVShows>>{
+    private val errorFlagResponse:LiveData<Boolean>
+    get() = repository.errorFlag
+
+    private val _response= MutableLiveData<List<TVShows>>()
+
+    fun  getLiveDataObserver(): MutableLiveData<List<TVShows>>{
         return _response
     }
-    fun loadingStateObserver(): MutableLiveData<Boolean> {
-        return LoadingFlag
+    fun loadingStateObserver(): LiveData<Boolean> {
+        return loadingFlagResponse
     }
-
-    fun errorStateObserver(): MutableLiveData<Boolean> {
-        return ErrorFlag
+    fun errorStateObserver(): LiveData<Boolean> {
+        return errorFlagResponse
     }
 
     fun getData()= viewModelScope.launch(Dispatchers.IO) {
-        getTVList ()
-    }
-    suspend fun getTVList() {
-        val response = api.getTVList()
-        if (response.isSuccessful) {
-            LoadingFlag.postValue(false)
-            _response.postValue(response.body()!!.tvshows)
-            }
-        else{
-            ErrorFlag.postValue(false)
-        }
+        repository.getTVList (_response)
     }
 }
