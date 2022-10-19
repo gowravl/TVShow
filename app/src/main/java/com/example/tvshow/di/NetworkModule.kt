@@ -16,11 +16,22 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun getRetroInstance(): TVShowAPI{
+    fun getGson(): GsonConverterFactory{
+        return GsonConverterFactory.create()
+    }
+
+    @Provides
+    @Singleton
+    fun getRetroInstance(gson: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(gson)
             .build()
-            .create(TVShowAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun getRetroServiceInstance(retrofit: Retrofit): TVShowAPI {
+        return retrofit.create(TVShowAPI::class.java)
     }
 }

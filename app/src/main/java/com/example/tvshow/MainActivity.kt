@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val tvAdapter = TVShowAdapter()
 
         recyclerView1.layoutManager = LinearLayoutManager(this)
         recyclerView1.setHasFixedSize(true)
         val viewModel = ViewModelProviders.of(this).get(TVShowViewModel::class.java)
+        recyclerView1.adapter = tvAdapter
 
         val progressDialog = ProgressDialog(this@MainActivity)
         progressDialog.apply {
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             })
             getData()
             getLiveDataObserver().observe(this@MainActivity,Observer<List<TVShows>>{tvshows->
-                recyclerView1.adapter = TVShowAdapter(this@MainActivity,tvshows)
+                tvAdapter.setListData(tvshows)
             })
         }
     }
