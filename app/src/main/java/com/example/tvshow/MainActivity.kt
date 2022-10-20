@@ -12,20 +12,20 @@ import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.tvshow.viewmodels.TVShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.tvshow.adapters.TVItemClicked
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TVItemClicked {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val tvAdapter = TVShowAdapter()
+         val tvAdapter by lazy { TVShowAdapter(this) }
 
         recyclerView1.layoutManager = LinearLayoutManager(this)
         recyclerView1.setHasFixedSize(true)
         val viewModel = ViewModelProviders.of(this).get(TVShowViewModel::class.java)
         recyclerView1.adapter = tvAdapter
-
         val progressDialog = ProgressDialog(this@MainActivity)
         progressDialog.apply {
             setTitle(getString(R.string.pleasewait))
@@ -46,4 +46,9 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
+
+    override fun onItemClicked(item: TVShows) {
+            intent=Intent(this,tvdetails::class.java)
+            startActivity(intent)
+        }
 }

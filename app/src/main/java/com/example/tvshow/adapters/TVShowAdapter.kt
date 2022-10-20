@@ -9,8 +9,10 @@ import com.example.tvshow.R
 import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.home_activity_card.view.*
 
-class TVShowAdapter(): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
-    class TVViewHolder(view: View) : RecyclerView.ViewHolder(view){
+class TVShowAdapter(
+    private val onClick: TVItemClicked
+    ): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
+    inner class TVViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val IMAGE_BASE = "https://image.tmdb.org/t/p/original/"
         fun bindTV(tvShow: TVShows){
             itemView.title.text = tvShow.title
@@ -24,17 +26,19 @@ class TVShowAdapter(): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TVViewHolder {
-        return TVViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.home_activity_card,parent,false)
-        )
+
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_activity_card,parent,false)
+        val viewHolder = TVViewHolder(view)
+        view.setOnClickListener {
+            onClick.onItemClicked(items[viewHolder.adapterPosition])
+        }
+        return viewHolder
+
     }
 
     override fun onBindViewHolder(holder: TVViewHolder, position: Int) {
         holder.bindTV(items.get(position))
-        holder.itemView.setOnClickListener {
-//                val intent = Intent(context, tvdetails::class.java)
-//                context.startActivity(intent)
-        }
+
     }
 
     override fun getItemCount(): Int = items.size
