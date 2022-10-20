@@ -10,8 +10,8 @@ import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.home_activity_card.view.*
 
 class TVShowAdapter(
-    private val onClick: TVItemClicked
-    ): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
+    val onClick : (TVShows)->(Unit)
+): RecyclerView.Adapter<TVShowAdapter.TVViewHolder>(){
     inner class TVViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val IMAGE_BASE = "https://image.tmdb.org/t/p/original/"
         fun bindTV(tvShow: TVShows){
@@ -21,7 +21,7 @@ class TVShowAdapter(
     }
     var items : MutableList<TVShows> = ArrayList()
 
-    fun setListData(tvshow: List<TVShows>) {
+    fun setListData(tvshow: List<TVShows>){
         items.addAll(tvshow)
         notifyDataSetChanged()
     }
@@ -30,7 +30,7 @@ class TVShowAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_activity_card,parent,false)
         val viewHolder = TVViewHolder(view)
         view.setOnClickListener {
-            onClick.onItemClicked(items[viewHolder.adapterPosition])
+            onClick(items[viewHolder.adapterPosition])
         }
         return viewHolder
 

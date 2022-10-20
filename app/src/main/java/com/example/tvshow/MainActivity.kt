@@ -12,15 +12,15 @@ import com.example.tvshow.models.TVShows
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.tvshow.viewmodels.TVShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.tvshow.adapters.TVItemClicked
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), TVItemClicked {
+class MainActivity : AppCompatActivity() {
+
+    val tvAdapter by lazy { TVShowAdapter(::onItemClicked) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-         val tvAdapter by lazy { TVShowAdapter(this) }
 
         recyclerView1.layoutManager = LinearLayoutManager(this)
         recyclerView1.setHasFixedSize(true)
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity(), TVItemClicked {
         }
     }
 
-    override fun onItemClicked(item: TVShows) {
+    private fun onItemClicked(item: TVShows) {
             intent=Intent(this,tvdetails::class.java)
             startActivity(intent)
-        }
+    }
 }
