@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tvshow.models.TVShows
-import com.example.tvshow.repository.MyRepository
+import com.example.tvshow.usecases.UseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class TVShowViewModel @Inject constructor (
-    private val repository: MyRepository
+    private val useCaseImpl: UseCaseImpl
         ):ViewModel() {
 
     private val _loadingFlag= MutableLiveData<Boolean>()
@@ -38,7 +38,7 @@ class TVShowViewModel @Inject constructor (
     }
 
     fun getData()= viewModelScope.launch(Dispatchers.IO) {
-        val response = repository.getTVList()
+        val response = useCaseImpl.fetchTVdata()
         if(response.isSuccessful){
             _loadingFlag.postValue(false)
             _result.postValue(response.body()!!.tvshows)
