@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AboutFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
@@ -14,71 +15,76 @@
             android:id="@+id/overviewLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="277dp"
+            android:layout_marginTop="20dp"
             android:text="Plot Summary"
-            android:textSize="20sp"
+            android:textSize="21sp"
             android:textStyle="bold"
+            app:fontFamily="@font/proxima_medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvDetailsOverview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="10dp"
             android:alpha="0.8"
+            android:textSize="15sp"
+            app:fontFamily="@font/proxima_medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/overviewLabel"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
-            tools:text="Nine noble families wage war against each other in order to gain control over the mythical land of Westeros. Meanwhile, a force is rising after millenniums and threatens the existence of living men." />
+            tools:text="In order to gain control over the mythical land of Westeros. Meanwhile, a force is rising after millenniums and threatens the existence of living men." />
 
         <TextView
             android:id="@+id/trailersLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="331dp"
+            android:layout_marginTop="16dp"
             android:text="Trailers"
-            android:textSize="22sp"
+            android:textSize="21sp"
             android:textStyle="bold"
+            app:fontFamily="@font/proxima_medium"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.046"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDetailsOverview" />
 
-    <HorizontalScrollView
-        android:id="@+id/tvTrailersContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trailersLabel">
-
-        <LinearLayout
-            android:id="@+id/tvTrailers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-
-    </HorizontalScrollView>
-        <TextView
-            android:id="@+id/castLabel"
+        <HorizontalScrollView
+            android:id="@+id/tvTrailersContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailersLabel">
+
+            <LinearLayout
+                android:id="@+id/tvTrailers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/castLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Cast &amp; Credits"
-            android:textSize="22sp"
+            android:textSize="21sp"
             android:textStyle="bold"
+            app:fontFamily="@font/proxima_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTrailersContainer" />
 
@@ -87,23 +93,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/castLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/castLabel"
+            tools:listitem="@layout/cast_item" />
 
         <TextView
             android:id="@+id/similarLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="15dp"
-            android:text="Tou may also like"
-            android:textSize="22sp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/proxima_medium"
+            android:text="You may also like"
+            android:textSize="21sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.064"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cast_rv" />
 
@@ -119,7 +127,7 @@
             app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/similarLabel"
-/>
+            tools:listitem="@layout/similar_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

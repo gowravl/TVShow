@@ -19,6 +19,7 @@ class FragmentsAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapte
     fun addFragment(fragment: Fragment, title:String){
         fragmentArrayList.add(fragment)
         fragmentTitle.add(title)
+        notifyDataSetChanged()
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun onItemClicked(item: TVShows) {
             intent=Intent(this,tvdetails::class.java)
+            intent.putExtra("tvshowid",item.id)
+            intent.putExtra("tvtitle",item.title)
+            intent.putExtra("tvback",item.backdrop)
             startActivity(intent)
     }
 }
